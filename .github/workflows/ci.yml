@@ -22,7 +22,7 @@ jobs:
       - name: Type check
         run: mypy
       - name: Test
-        run: pytest --cov=triagegpt --cov-report=term-missing --cov-fail-under=85
+        run: pytest --cov=triagegpt --cov-report=term-missing --cov-fail-under=90
       - name: Build
         run: |
           pip install build

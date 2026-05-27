@@ -1,0 +1,56 @@
+{
+  "confident_match": true,
+  "neighbors": [
+    {
+      "owner": "identity",
+      "root_cause": "auth token expiry not handled",
+      "similarity": 1.0,
+      "test_id": "tests/test_auth.py::test_login"
+    },
+    {
+      "owner": "identity",
+      "root_cause": "auth token expiry not handled",
+      "similarity": 1.0,
+      "test_id": "tests/test_auth.py::test_login"
+    },
+    {
+      "owner": "identity",
+      "root_cause": "auth token expiry not handled",
+      "similarity": 0.9918,
+      "test_id": "tests/test_auth.py::test_login"
+    },
+    {
+      "owner": "identity",
+      "root_cause": "auth token expiry not handled",
+      "similarity": 0.9918,
+      "test_id": "tests/test_auth.py::test_login"
+    },
+    {
+      "owner": "identity",
+      "root_cause": "auth token expiry not handled",
+      "similarity": 0.9918,
+      "test_id": "tests/test_auth.py::test_login"
+    }
+  ],
+  "owner_confidence": 1.0,
+  "owner_votes": [
+    {
+      "owner": "identity",
+      "weight": 1.0
+    }
+  ],
+  "suggested_owner": "identity",
+  "suggested_root_cause": "auth token expiry not handled",
+  "summary": {
+    "error_type": "AssertionError",
+    "headline": "AssertionError: 401 Unauthorized on valid credentials",
+    "key_lines": [
+      "FAILED tests/test_auth.py::test_login - AssertionError: 401 Unauthorized on valid credentials",
+      "File \"src/identity/handler.py\", line 283, in run",
+      "File \"src/identity/handler.py\", line 261, in run",
+      "File \"src/identity/handler.py\", line 257, in run",
+      "File \"src/identity/handler.py\", line 77, in run"
+    ]
+  },
+  "test_id": "tests/test_auth.py::test_login"
+}

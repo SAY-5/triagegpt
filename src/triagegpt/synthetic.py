@@ -125,3 +125,18 @@ def archetype_labels() -> list[tuple[str, str]]:
 
 def archetype_count() -> int:
     return len(_ARCHETYPES)
+
+
+def labeled_queries(per_archetype: int = 3, seed: int = 7000) -> list[tuple[TestFailure, str, str]]:
+    """Build labeled query cases: (query, true_root_cause, true_owner).
+
+    Each query is drawn from a known archetype with a distinct seed, so its true
+    archetype identity is known regardless of which template wording it gets.
+    """
+    cases: list[tuple[TestFailure, str, str]] = []
+    for idx, archetype in enumerate(_ARCHETYPES):
+        for j in range(per_archetype):
+            rng = random.Random(seed + idx * 100 + j)
+            query = _make_failure(rng, archetype, labeled=False)
+            cases.append((query, str(archetype["root_cause"]), str(archetype["owner"])))
+    return cases

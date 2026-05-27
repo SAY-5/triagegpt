@@ -28,6 +28,21 @@ jobs:
           pip install build
           python -m build
 
+  bench-regress:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e .
+      - name: Record runner baseline
+        run: python benchmarks/bench_retrieval.py --corpus-size 5000 --queries 200 --write-baseline
+      - name: Check retrieval does not regress beyond 30 percent
+        run: python benchmarks/bench_retrieval.py --corpus-size 5000 --queries 200 --check --tolerance 0.30
+
   triage-post:
     runs-on: ubuntu-latest
     needs: test

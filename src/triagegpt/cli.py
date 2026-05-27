@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
+from .attribution import check_run_payload
 from .index import FailureIndex
 from .ingest import parse_log
 from .pipeline import TriagePipeline
@@ -27,9 +29,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("log", type=Path, help="path to a failing test log file")
     parser.add_argument(
         "--format",
-        choices=["json", "markdown"],
+        choices=["json", "markdown", "check"],
         default="json",
-        help="output format (default: json)",
+        help="output format: json report, ci markdown, or check-run payload",
     )
     parser.add_argument(
         "--out",
@@ -55,7 +57,12 @@ def main(argv: list[str] | None = None) -> int:
     pipeline = TriagePipeline(index, k=args.k)
     result = pipeline.triage(failures[0])
 
-    rendered = to_json(result) if args.format == "json" else to_ci_markdown(result)
+    if args.format == "json":
+        rendered = to_json(result)
+    elif args.format == "markdown":
+        rendered = to_ci_markdown(result)
+    else:
+        rendered = json.dumps(check_run_payload(result), indent=2, sort_keys=True)
     if args.out is not None:
         args.out.write_text(rendered + "\n", encoding="utf-8")
     else:

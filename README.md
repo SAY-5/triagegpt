@@ -48,10 +48,21 @@ failures, retrieves neighbors, and prints the report.
 ## Posting into CI
 
 The provided GitHub Actions workflow runs the tool on a sample log and uploads
-the rendered Markdown as a build artifact. A pipeline can instead pipe the
-Markdown into a pull request comment or a check run payload. Because the
-provider layer is deterministic, the emitted artifact is stable for a given
-input.
+two artifacts: the rendered Markdown comment (`--format markdown`) and a
+check-run style JSON payload (`--format check`). The check payload carries the
+attributed owner, its confidence, the ranked owner list, and the supporting
+neighbors, in the shape a step would post back to the failing run. A pipeline
+can pipe the Markdown into a pull request comment or hand the JSON to a check
+run API call. Because the provider layer is deterministic, the emitted artifact
+is stable for a given input.
+
+## Owner attribution
+
+The neighbors retrieved for a failure carry owner labels. The suggester
+aggregates them into a normalized, ranked owner list with a confidence
+(`triagegpt.attribution.ranked_owners`). When the top owner clears the
+confidence floor it becomes the suggested owner; otherwise the result reports
+no confident match. `check_run_payload` renders this into the CI artifact.
 
 ## The model provider seam
 

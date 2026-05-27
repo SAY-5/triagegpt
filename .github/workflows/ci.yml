@@ -56,9 +56,13 @@ jobs:
       - name: Run triage on sample log
         run: |
           triagegpt examples/sample_pytest.log --format markdown --out triage.md
+          triagegpt examples/sample_pytest.log --format check --out triage-check.json
           cat triage.md
-      - name: Upload triage report
+          cat triage-check.json
+      - name: Upload triage artifacts
         uses: actions/upload-artifact@v4
         with:
           name: triage-report
-          path: triage.md
+          path: |
+            triage.md
+            triage-check.json

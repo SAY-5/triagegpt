@@ -1,0 +1,5 @@
+============================= short test summary ============================
+FAILED tests/test_orders.py::test_checkout - ConnectionError: connection pool exhausted after 30s
+    File "src/data-platform/handler.py", line 142, in run
+    File "src/data-platform/handler.py", line 58, in run
+    ConnectionError: connection pool exhausted after 30s

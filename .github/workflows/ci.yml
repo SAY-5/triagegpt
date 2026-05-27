@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Type check
+        run: mypy
+      - name: Test
+        run: pytest --cov=triagegpt --cov-report=term-missing --cov-fail-under=85
+      - name: Build
+        run: |
+          pip install build
+          python -m build
+
+  triage-post:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e .
+      - name: Run triage on sample log
+        run: |
+          triagegpt examples/sample_pytest.log --format markdown --out triage.md
+          cat triage.md
+      - name: Upload triage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-report
+          path: triage.md
